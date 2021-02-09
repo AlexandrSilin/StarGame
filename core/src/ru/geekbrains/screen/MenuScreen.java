@@ -23,8 +23,7 @@ public class MenuScreen extends BaseScreen  {
     }
 
     private void destination(Vector2 point){
-        v.x = Float.compare(point.x, touch.x);
-        v.y = Float.compare(point.y, touch.y);
+        v.set(Float.compare(point.x, touch.x), Float.compare(point.y, touch.y));
     }
 
     @Override
@@ -32,7 +31,7 @@ public class MenuScreen extends BaseScreen  {
         Gdx.gl.glClearColor(0.4f, 0.5f, 0.6f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        if (point.x != touch.x || point.y != touch.y) {
+        if (!point.equals(touch)) {
             destination(point);
             touch.add(v);
         }
@@ -48,8 +47,7 @@ public class MenuScreen extends BaseScreen  {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        point.x = screenX;
-        point.y = Gdx.graphics.getHeight() - screenY;
+        point.set(screenX, Gdx.graphics.getHeight() - screenY);
         return false;
     }
 }
