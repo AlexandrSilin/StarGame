@@ -1,53 +1,57 @@
 package ru.geekbrains.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.BaseScreen;
+import ru.geekbrains.base.sprites.Background;
+import ru.geekbrains.base.sprites.Logo;
+import ru.geekbrains.math.Rect;
 
 public class MenuScreen extends BaseScreen  {
-    private Texture img;
+    private Texture bg;
+    private Texture lg;
     private Vector2 touch;
-    private Vector2 v;
+    private Background background;
+    private Logo logo;
     private Vector2 point;
 
     @Override
     public void show() {
         super.show();
-        img = new Texture("icon.jpg");
+        bg = new Texture("textures/bg.jpg");
+        lg = new Texture("textures/icon.jpg");
+        background = new Background(bg);
+        logo = new Logo(lg);
         touch = new Vector2();
-        v = new Vector2();
         point = new Vector2();
-    }
-
-    private void destination(Vector2 point){
-        v.set(Float.compare(point.x, touch.x), Float.compare(point.y, touch.y));
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.4f, 0.5f, 0.6f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        if (!point.equals(touch)) {
-            destination(point);
-            touch.add(v);
-        }
-        batch.draw(img, touch.x, touch.y);
+        background.draw(batch);
+        logo.draw(batch);
+        logo.move();
         batch.end();
     }
 
     @Override
     public void dispose() {
-        img.dispose();
+        lg.dispose();
+        bg.dispose();
         super.dispose();
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        point.set(screenX, Gdx.graphics.getHeight() - screenY);
-        return false;
+    public boolean touchDown(Vector2 touch, int pointer, int button){
+        logo.touchDown(touch, pointer, button);
+        return super.touchDown(touch, pointer, button);
+    }
+
+    @Override
+    public void resize(Rect worldBounds) {
+        background.resize(worldBounds);
+        logo.resize(worldBounds);
     }
 }
