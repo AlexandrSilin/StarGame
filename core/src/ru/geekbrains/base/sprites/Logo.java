@@ -10,6 +10,7 @@ public class Logo extends Sprite {
     private Vector2 v;
     private Vector2 touch;
     private Vector2 tmp;
+    private final float V_LEN = 0.01f;
 
     public Logo(Texture texture) {
         super(new TextureRegion(texture));
@@ -20,24 +21,19 @@ public class Logo extends Sprite {
         tmp = new Vector2();
     }
 
-    public void move() {
+    @Override
+    public void update(float delta) {
         tmp.set(touch);
-        if (tmp.sub(pos).len() > Math.pow(this.getScale(), 2))
-            this.pos.mulAdd(v, (float) Math.pow(this.getScale(), 2));
+        if (tmp.sub(pos).len() > V_LEN)
+            pos.add(v);
         else
             pos.set(touch);
     }
 
     @Override
-    public void resize(Rect worldBounds) {
-        this.pos.set(worldBounds.pos);
-        setHeightProportion(worldBounds.getHeight());
-    }
-
-    @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        v.set(touch.cpy().sub(this.pos)).setLength(this.getScale());
         this.touch = touch;
+        v.set(touch.cpy().sub(this.pos)).setLength(V_LEN);
         return false;
     }
 }

@@ -14,7 +14,6 @@ public class MenuScreen extends BaseScreen  {
     private Vector2 touch;
     private Background background;
     private Logo logo;
-    private Vector2 point;
 
     @Override
     public void show() {
@@ -24,7 +23,6 @@ public class MenuScreen extends BaseScreen  {
         background = new Background(bg);
         logo = new Logo(lg);
         touch = new Vector2();
-        point = new Vector2();
     }
 
     @Override
@@ -32,7 +30,7 @@ public class MenuScreen extends BaseScreen  {
         batch.begin();
         background.draw(batch);
         logo.draw(batch);
-        logo.move();
+        logo.update(delta);
         batch.end();
     }
 
@@ -46,7 +44,7 @@ public class MenuScreen extends BaseScreen  {
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button){
         logo.touchDown(touch, pointer, button);
-        return super.touchDown(touch, pointer, button);
+        return false;
     }
 
     @Override
