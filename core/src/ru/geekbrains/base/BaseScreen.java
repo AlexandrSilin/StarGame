@@ -108,6 +108,7 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         touch.set(screenX, Gdx.graphics.getHeight() - screenY).mul(screenToWorld);
+        touchUp(touch, pointer, button);
         return false;
     }
 
@@ -118,10 +119,11 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         touch.set(screenX, Gdx.graphics.getHeight() - screenY).mul(screenToWorld);
+        touchDragged(touch, pointer);
         return false;
     }
 
-    public boolean touchDragged(Vector2 touch, int pointer, int button) {
+    public boolean touchDragged(Vector2 touch, int pointer) {
         return false;
     }
 
