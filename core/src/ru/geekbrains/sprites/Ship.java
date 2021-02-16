@@ -16,13 +16,12 @@ public class Ship extends Sprite {
     private final float MARGIN = 0.02f;
     private boolean moveLeft = false;
     private boolean moveRight = false;
-    private static float HEIGHT = 0.15f;
-    private Vector2 v;
+    private final float HEIGHT = 0.15f;
+    private final Vector2 v = new Vector2(1, 0);
     private Rect worldBounds;
 
     public Ship(TextureRegion texture) {
         super(texture.split(texture.getRegionWidth() / 2, texture.getRegionHeight())[0][0]);
-        v = new Vector2(1, 0);
     }
 
     @Override
@@ -58,11 +57,19 @@ public class Ship extends Sprite {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
+        if (touch.x > worldBounds.pos.x)
+            setMoveRight(true);
+        else
+            setMoveLeft(true);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
+        if (moveRight)
+            setMoveRight(false);
+        if (moveLeft)
+            setMoveLeft(false);
         return false;
     }
 
