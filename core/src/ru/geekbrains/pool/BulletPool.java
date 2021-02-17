@@ -9,5 +9,4 @@ public class BulletPool extends SpritesPool<Bullet> {
     protected Bullet newObject() {
         return new Bullet();
     }
-
 }
