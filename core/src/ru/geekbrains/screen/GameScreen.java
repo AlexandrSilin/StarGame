@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.BaseScreen;
 import ru.geekbrains.math.Rect;
+import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.sprites.Background;
 import ru.geekbrains.sprites.Ship;
 import ru.geekbrains.sprites.Star;
@@ -20,6 +21,7 @@ public class GameScreen extends BaseScreen {
     private final int STAR_COUNT = 128;
     private Star[] stars;
     private Ship ship;
+    private BulletPool bulletPool;
 
     @Override
     public void show() {
@@ -30,7 +32,8 @@ public class GameScreen extends BaseScreen {
         stars = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++)
             stars[i] = new Star(mainAtlas);
-        ship = new Ship(mainAtlas.findRegion("main_ship"));
+        bulletPool = new BulletPool();
+        ship = new Ship(mainAtlas, bulletPool);
     }
 
     @Override
@@ -52,6 +55,7 @@ public class GameScreen extends BaseScreen {
         super.dispose();
         bg.dispose();
         mainAtlas.dispose();
+        bulletPool.dispose();
     }
 
     @Override
@@ -82,6 +86,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars)
             star.update(delta);
         ship.update(delta);
+        bulletPool.updateActiveSprites(delta);
     }
 
     private void draw(){
@@ -90,6 +95,7 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars)
             star.draw(batch);
         ship.draw(batch);
+        bulletPool.drawActiveSprites(batch);
         batch.end();
     }
 }
