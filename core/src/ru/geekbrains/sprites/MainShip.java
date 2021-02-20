@@ -1,12 +1,10 @@
 package ru.geekbrains.sprites;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.geekbrains.base.Sprite;
+import ru.geekbrains.base.Ship;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
 
@@ -15,34 +13,24 @@ import static com.badlogic.gdx.Input.Keys.D;
 import static com.badlogic.gdx.Input.Keys.LEFT;
 import static com.badlogic.gdx.Input.Keys.RIGHT;
 
-public class Ship extends Sprite {
-    private final float SPEED = 0.005f;
+public class MainShip extends Ship {
+
     private final float MARGIN = 0.02f;
     private final float HEIGHT = 0.15f;
 
-    private boolean moveLeft = false;
-    private boolean moveRight = false;
-
-
-    private float reloadInterval;
-    private float reloadTimer;
-
-    private final Vector2 v = new Vector2(1, 0);
-    private Rect worldBounds;
-    private BulletPool bulletPool;
-    private TextureRegion bulletRegion;
-    private Vector2 bulletV;
-    private Vector2 bulletPos;
-    private Sound sound;
-
-    public Ship(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
-        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
+        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
         this.bulletPool = bulletPool;
-        this.bulletRegion = atlas.findRegion("bulletMainShip");
+        bulletRegion = atlas.findRegion("bulletMainShip");
         bulletV = new Vector2(0, 0.5f);
         bulletPos = new Vector2();
+        bulletHeight = 0.01f;
+        damage = 1;
         reloadInterval = 0.15f;
+        speed = 0.005f;
+        hp = 100;
+        v = new Vector2(1, 0);
     }
 
     @Override
@@ -54,15 +42,12 @@ public class Ship extends Sprite {
 
     @Override
     public void update(float delta) {
-        reloadTimer += delta;
-        if (reloadTimer >= reloadInterval) {
-            reloadTimer = 0f;
-            shoot();
-        }
+        super.update(delta);
         if (moveLeft && worldBounds.getLeft() < this.getLeft())
-            pos.sub(v.setLength(SPEED));
+            pos.sub(v.setLength(speed));
         if (moveRight && worldBounds.getRight() > this.getRight())
-            pos.add(v.setLength(SPEED));
+            pos.add(v.setLength(speed));
+        bulletPos.set(pos.x, pos.y + getHalfHeight());
     }
 
     public boolean keyDown(int keycode) {
@@ -105,12 +90,5 @@ public class Ship extends Sprite {
 
     private void setMoveRight(boolean move){
         moveRight = move;
-    }
-
-    private void shoot() {
-        Bullet bullet = bulletPool.obtain();
-        bulletPos.set(pos.x, pos.y + getHalfHeight());
-        bullet.set(this, bulletRegion, bulletPos, bulletV, 0.01f, worldBounds, 1);
-        sound.setVolume(sound.play(), 0.05f);
     }
 }

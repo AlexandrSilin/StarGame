@@ -17,7 +17,7 @@ public class BaseScreen implements Screen, InputProcessor {
 
     private Rect screenBounds;
     private Rect glBounds;
-    private Rect worldBounds;
+    protected Rect worldBounds;
 
     private Matrix4 worldToGl;
     private Matrix3 screenToWorld;
@@ -56,7 +56,7 @@ public class BaseScreen implements Screen, InputProcessor {
     }
 
     public void resize(Rect worldBounds){
-
+         
     }
 
     @Override
