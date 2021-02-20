@@ -1,6 +1,7 @@
 package ru.geekbrains.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -12,8 +13,6 @@ import ru.geekbrains.sprites.Background;
 import ru.geekbrains.sprites.Ship;
 import ru.geekbrains.sprites.Star;
 
-import static com.badlogic.gdx.Input.Keys.*;
-
 public class GameScreen extends BaseScreen {
     private TextureAtlas mainAtlas;
     private Texture bg;
@@ -22,10 +21,14 @@ public class GameScreen extends BaseScreen {
     private Star[] stars;
     private Ship ship;
     private BulletPool bulletPool;
+    private Music music;
 
     @Override
     public void show() {
         super.show();
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+        music.setLooping(true);
+        music.play();
         bg = new Texture("textures/bg.jpg");
         background = new Background(bg);
         mainAtlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
@@ -39,6 +42,7 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         update(delta);
+        freeAllDestroyed();
         draw();
     }
 
@@ -56,6 +60,7 @@ public class GameScreen extends BaseScreen {
         bg.dispose();
         mainAtlas.dispose();
         bulletPool.dispose();
+        music.dispose();
     }
 
     @Override
@@ -97,5 +102,9 @@ public class GameScreen extends BaseScreen {
         ship.draw(batch);
         bulletPool.drawActiveSprites(batch);
         batch.end();
+    }
+
+    private void freeAllDestroyed() {
+        bulletPool.freeAllDestroyedActiveSprites();
     }
 }
