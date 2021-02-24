@@ -31,6 +31,7 @@ public class MainShip extends Ship {
         speed = 0.005f;
         hp = 100;
         v = new Vector2(1, 0);
+        onField = true;
     }
 
     @Override

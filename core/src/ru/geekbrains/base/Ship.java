@@ -28,6 +28,7 @@ public class Ship extends Sprite{
 
     protected boolean moveLeft = false;
     protected boolean moveRight = false;
+    protected boolean onField = false;
 
     public Ship(){
 
@@ -36,6 +37,8 @@ public class Ship extends Sprite{
     public Ship(TextureRegion region, int rows, int cols, int frames){
         super(region, rows, cols, frames);
     }
+
+
 
     @Override
     public void update(float delta) {
@@ -47,7 +50,7 @@ public class Ship extends Sprite{
 
     }
 
-    private void shoot() {
+    protected void shoot() {
         Bullet bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, damage);
         sound.setVolume(sound.play(), 0.05f);
