@@ -18,6 +18,7 @@ public class MainShip extends Ship {
 
     private final float MARGIN = 0.02f;
     private final float HEIGHT = 0.15f;
+    private boolean isAlive = true;
 
     public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
@@ -31,7 +32,7 @@ public class MainShip extends Ship {
         damage = 1;
         reloadInterval = 0.15f;
         speed = 0.005f;
-        hp = 100;
+        hp = 1;
         v = new Vector2(1, 0);
     }
 
@@ -51,6 +52,8 @@ public class MainShip extends Ship {
     @Override
     public void update(float delta) {
         super.update(delta);
+        if (hp == 0)
+            isAlive = false;
         if (!onField)
             arrive();
         if (moveLeft && worldBounds.getLeft() < this.getLeft())
@@ -92,6 +95,10 @@ public class MainShip extends Ship {
         if (moveLeft)
             setMoveLeft(false);
         return false;
+    }
+
+    public boolean isAlive(){
+        return isAlive;
     }
 
     public boolean isBulletCollision(Rect bullet) {

@@ -1,10 +1,12 @@
 package ru.geekbrains.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
@@ -35,17 +37,22 @@ public class GameScreen extends BaseScreen {
     private Sound enemyBulletSound;
     private EnemyEmitter enemyEmitter;
     private Sound explosionSound;
+    private Game game;
+
+    public GameScreen(Game game){
+        this.game = game;
+    }
 
     @Override
     public void show() {
         super.show();
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         enemyBulletSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
+        mainAtlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         music.setLooping(true);
         music.play();
         bg = new Texture("textures/bg.jpg");
         background = new Background(bg);
-        mainAtlas = new TextureAtlas(Gdx.files.internal("textures/mainAtlas.tpack"));
         stars = new Star[STAR_COUNT];
         for (int i = 0; i < STAR_COUNT; i++)
             stars[i] = new Star(mainAtlas);
@@ -113,11 +120,13 @@ public class GameScreen extends BaseScreen {
     private void update(float delta){
         for (Star star : stars)
             star.update(delta);
-        mainShip.update(delta);
-        bulletPool.updateActiveSprites(delta);
-        explosionPool.updateActiveSprites(delta);
-        enemyPool.updateActiveSprites(delta);
-        enemyEmitter.generate(delta);
+        if (mainShip.isAlive()) {
+            mainShip.update(delta);
+            bulletPool.updateActiveSprites(delta);
+            explosionPool.updateActiveSprites(delta);
+            enemyPool.updateActiveSprites(delta);
+            enemyEmitter.generate(delta);
+        }
     }
 
     private void draw(){
@@ -125,10 +134,14 @@ public class GameScreen extends BaseScreen {
         background.draw(batch);
         for (Star star : stars)
             star.draw(batch);
-        mainShip.draw(batch);
-        bulletPool.drawActiveSprites(batch);
-        explosionPool.drawActiveSprites(batch);
-        enemyPool.drawActiveSprites(batch);
+        if (mainShip.isAlive()) {
+            mainShip.draw(batch);
+            bulletPool.drawActiveSprites(batch);
+            explosionPool.drawActiveSprites(batch);
+            enemyPool.drawActiveSprites(batch);
+        } else {
+            game.setScreen(new GameOverScreen(game));
+        }
         batch.end();
     }
 
@@ -150,7 +163,6 @@ public class GameScreen extends BaseScreen {
                 mainShip.damage(enemyShip.getDamage());
             }
         }
-
         for (Bullet bullet : bulletList) {
             if (bullet.isDestroyed())
                 continue;
