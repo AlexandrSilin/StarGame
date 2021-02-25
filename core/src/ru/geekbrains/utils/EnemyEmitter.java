@@ -34,6 +34,7 @@ public class EnemyEmitter {
     private final Vector2 enemySmallBulletV = new Vector2(0, -0.3f);
     private final Vector2 enemyMediumBulletV = new Vector2(0, -0.25f);
     private final Vector2 enemyBigBulletV = new Vector2(0, -0.2f);
+
     private TextureRegion[] enemySmallRegions;
     private TextureRegion[] enemyMediumRegions;
     private TextureRegion[] enemyBigRegions;
