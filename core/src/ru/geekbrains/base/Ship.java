@@ -43,7 +43,7 @@ public class Ship extends Sprite{
     @Override
     public void update(float delta) {
         reloadTimer += delta;
-        if (reloadTimer >= reloadInterval) {
+        if (reloadTimer >= reloadInterval && onField) {
             reloadTimer = 0f;
             shoot();
         }

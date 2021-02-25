@@ -31,19 +31,26 @@ public class MainShip extends Ship {
         speed = 0.005f;
         hp = 100;
         v = new Vector2(1, 0);
-        onField = true;
     }
 
     @Override
     public void resize(Rect worldBounds) {
         setHeightProportion(HEIGHT);
-        setBottom(worldBounds.getBottom() + MARGIN);
+        setBottom(worldBounds.getBottom() - getHeight());
         this.worldBounds = worldBounds;
+    }
+
+    private void arrive(){
+        if (getBottom() < worldBounds.getBottom() + MARGIN) {
+            pos.y += speed;
+        } else onField = true;
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        if (!onField)
+            arrive();
         if (moveLeft && worldBounds.getLeft() < this.getLeft())
             pos.sub(v.setLength(speed));
         if (moveRight && worldBounds.getRight() > this.getRight())
