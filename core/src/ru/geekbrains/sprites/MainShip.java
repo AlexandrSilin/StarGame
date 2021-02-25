@@ -32,7 +32,7 @@ public class MainShip extends Ship {
         damage = 1;
         reloadInterval = 0.15f;
         speed = 0.005f;
-        hp = 1;
+        hp = 100;
         v = new Vector2(1, 0);
     }
 

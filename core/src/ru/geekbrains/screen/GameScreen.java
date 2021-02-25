@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
@@ -24,10 +23,10 @@ import ru.geekbrains.sprites.Star;
 import ru.geekbrains.utils.EnemyEmitter;
 
 public class GameScreen extends BaseScreen {
+    private final int STAR_COUNT = 128;
     private TextureAtlas mainAtlas;
     private Texture bg;
     private Background background;
-    private final int STAR_COUNT = 128;
     private Star[] stars;
     private MainShip mainShip;
     private BulletPool bulletPool;
@@ -120,13 +119,13 @@ public class GameScreen extends BaseScreen {
     private void update(float delta){
         for (Star star : stars)
             star.update(delta);
-        if (mainShip.isAlive()) {
-            mainShip.update(delta);
-            bulletPool.updateActiveSprites(delta);
-            explosionPool.updateActiveSprites(delta);
-            enemyPool.updateActiveSprites(delta);
-            enemyEmitter.generate(delta);
-        }
+        if (!mainShip.isAlive())
+            game.setScreen(new GameOverScreen(game));
+        mainShip.update(delta);
+        bulletPool.updateActiveSprites(delta);
+        explosionPool.updateActiveSprites(delta);
+        enemyPool.updateActiveSprites(delta);
+        enemyEmitter.generate(delta);
     }
 
     private void draw(){
@@ -134,14 +133,10 @@ public class GameScreen extends BaseScreen {
         background.draw(batch);
         for (Star star : stars)
             star.draw(batch);
-        if (mainShip.isAlive()) {
-            mainShip.draw(batch);
-            bulletPool.drawActiveSprites(batch);
-            explosionPool.drawActiveSprites(batch);
-            enemyPool.drawActiveSprites(batch);
-        } else {
-            game.setScreen(new GameOverScreen(game));
-        }
+        mainShip.draw(batch);
+        bulletPool.drawActiveSprites(batch);
+        explosionPool.drawActiveSprites(batch);
+        enemyPool.drawActiveSprites(batch);
         batch.end();
     }
 
