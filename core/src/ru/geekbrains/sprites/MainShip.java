@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.base.Ship;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
+import ru.geekbrains.pool.ExplosionPool;
 
 import static com.badlogic.gdx.Input.Keys.A;
 import static com.badlogic.gdx.Input.Keys.D;
@@ -17,11 +18,13 @@ public class MainShip extends Ship {
 
     private final float MARGIN = 0.02f;
     private final float HEIGHT = 0.15f;
+    private boolean isAlive = true;
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         sound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
         this.bulletPool = bulletPool;
+        this.explosionPool = explosionPool;
         bulletRegion = atlas.findRegion("bulletMainShip");
         bulletV = new Vector2(0, 0.5f);
         bulletPos = new Vector2();
@@ -36,13 +39,23 @@ public class MainShip extends Ship {
     @Override
     public void resize(Rect worldBounds) {
         setHeightProportion(HEIGHT);
-        setBottom(worldBounds.getBottom() + MARGIN);
+        setBottom(worldBounds.getBottom() - getHeight());
         this.worldBounds = worldBounds;
+    }
+
+    private void arrive(){
+        if (getBottom() < worldBounds.getBottom() + MARGIN) {
+            pos.y += speed;
+        } else onField = true;
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        if (hp == 0)
+            isAlive = false;
+        if (!onField)
+            arrive();
         if (moveLeft && worldBounds.getLeft() < this.getLeft())
             pos.sub(v.setLength(speed));
         if (moveRight && worldBounds.getRight() > this.getRight())
@@ -82,6 +95,18 @@ public class MainShip extends Ship {
         if (moveLeft)
             setMoveLeft(false);
         return false;
+    }
+
+    public boolean isAlive(){
+        return isAlive;
+    }
+
+    public boolean isBulletCollision(Rect bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > pos.y
+                || bullet.getTop() < getBottom()
+        );
     }
 
     private void setMoveLeft(boolean move){

@@ -34,19 +34,20 @@ public class EnemyEmitter {
     private final Vector2 enemySmallBulletV = new Vector2(0, -0.3f);
     private final Vector2 enemyMediumBulletV = new Vector2(0, -0.25f);
     private final Vector2 enemyBigBulletV = new Vector2(0, -0.2f);
+
     private TextureRegion[] enemySmallRegions;
     private TextureRegion[] enemyMediumRegions;
     private TextureRegion[] enemyBigRegions;
 
-    private Rect wordBounds;
+    private Rect worldBounds;
     private TextureRegion bulletRegion;
     private EnemyPool enemyPool;
 
     private final float generateInterval = 4f;
     private float generateTimer;
 
-    public EnemyEmitter(TextureAtlas atlas, Rect wordBounds, EnemyPool enemyPool) {
-        this.wordBounds = wordBounds;
+    public EnemyEmitter(TextureAtlas atlas, Rect worldBounds, EnemyPool enemyPool) {
+        this.worldBounds = worldBounds;
         this.enemyPool = enemyPool;
         enemySmallRegions = Regions.split(atlas.findRegion("enemy0"), 1, 2 ,2);
         enemyMediumRegions = Regions.split(atlas.findRegion("enemy1"), 1, 2 ,2);
@@ -92,9 +93,9 @@ public class EnemyEmitter {
                         ENEMY_BIG_HP);
                 }
                 enemyShip.pos.x = Rnd.nextFloat(
-                        wordBounds.getLeft() + enemyShip.getHalfWidth(),
-                        wordBounds.getRight() - enemyShip.getHalfWidth());
-                enemyShip.pos.y = wordBounds.getTop();
+                        worldBounds.getLeft() + enemyShip.getHalfWidth(),
+                        worldBounds.getRight() - enemyShip.getHalfWidth());
+                enemyShip.pos.y = worldBounds.getTop() + enemyShip.getHeight();
         }
     }
 }
