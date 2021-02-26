@@ -13,6 +13,7 @@ import ru.geekbrains.sprites.ButtonExit;
 import ru.geekbrains.sprites.ButtonPlay;
 import ru.geekbrains.sprites.Star;
 import ru.geekbrains.math.Rect;
+import ru.geekbrains.sprites.Title;
 
 public class MenuScreen extends BaseScreen  {
     private Texture bg;
@@ -25,6 +26,7 @@ public class MenuScreen extends BaseScreen  {
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
     private Music music;
+    private Title title;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -34,6 +36,9 @@ public class MenuScreen extends BaseScreen  {
     public void show() {
         super.show();
         bg = new Texture("textures/bg.jpg");
+        Texture t = new Texture("textures/title.png");
+        t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        title = new Title(t);
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         music.setLooping(true);
         music.play();
@@ -78,6 +83,7 @@ public class MenuScreen extends BaseScreen  {
     @Override
     public void resize(Rect worldBounds) {
         background.resize(worldBounds);
+        title.resize(worldBounds);
         for (Star star : stars)
             star.resize(worldBounds);
         buttonExit.resize(worldBounds);
@@ -92,6 +98,7 @@ public class MenuScreen extends BaseScreen  {
     private void draw(){
         batch.begin();
         background.draw(batch);
+        title.draw(batch);
         for (Star star : stars)
             star.draw(batch);
         buttonExit.draw(batch);

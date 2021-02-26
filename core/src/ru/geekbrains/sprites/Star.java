@@ -9,7 +9,7 @@ import ru.geekbrains.math.Rnd;
 
 public class Star extends Sprite {
     private Rect worldBounds;
-    private final Vector2 v;
+    protected final Vector2 v;
 
     public Star(TextureAtlas atlas) {
         super(atlas.findRegion("star"));
@@ -20,10 +20,14 @@ public class Star extends Sprite {
     @Override
     public void update(float delta) {
         pos.mulAdd(v, delta);
-        if (getLeft() < worldBounds.getLeft()) {
+        checkBounds();
+    }
+
+    public void checkBounds(){
+        if (getLeft() + getWidth() < worldBounds.getLeft()) {
             setLeft(worldBounds.getRight());
         }
-        if (getRight() > worldBounds.getRight()) {
+        if (getRight() - getWidth() > worldBounds.getRight()) {
             setRight(worldBounds.getLeft());
         }
         if (getBottom() < worldBounds.getBottom()) {
