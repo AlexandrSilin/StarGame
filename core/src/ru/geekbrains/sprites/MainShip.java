@@ -8,13 +8,11 @@ import ru.geekbrains.base.Ship;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.ExplosionPool;
-import ru.geekbrains.screen.GameScreen;
 
 import static com.badlogic.gdx.Input.Keys.A;
 import static com.badlogic.gdx.Input.Keys.D;
 import static com.badlogic.gdx.Input.Keys.LEFT;
 import static com.badlogic.gdx.Input.Keys.RIGHT;
-import static ru.geekbrains.screen.GameScreen.State.GAME_OVER;
 
 public class MainShip extends Ship {
 

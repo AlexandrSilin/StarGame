@@ -59,10 +59,6 @@ public class Ship extends Sprite{
         return damage;
     }
 
-    public Vector2 getV(){
-        return v;
-    }
-
     public void damage(int damage){
         hp -= damage;
         frame = 1;
@@ -88,13 +84,5 @@ public class Ship extends Sprite{
     public void destroy() {
         super.destroy();
         boom();
-    }
-
-    public boolean isMoveLeft() {
-        return moveLeft;
-    }
-
-    public boolean isMoveRight() {
-        return moveRight;
     }
 }

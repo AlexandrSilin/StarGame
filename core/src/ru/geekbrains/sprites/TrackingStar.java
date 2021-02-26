@@ -16,7 +16,7 @@ public class TrackingStar extends Star {
 
     public void update(float delta, float xv) {
         trackingV.set(xv, 0);
-        sumV.setZero().mulAdd(trackingV, 0.2f).rotate(180).add(v);
+        sumV.setZero().mulAdd(trackingV, 0.2f).rotateDeg(180).add(v);
         pos.mulAdd(sumV, delta);
         checkBounds();
     }
