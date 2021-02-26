@@ -8,21 +8,22 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.screen.GameScreen;
 
 public class ButtonNewGame extends BaseButton {
-    private final Game game;
+    private final GameScreen gameScreen;
 
-    public ButtonNewGame(TextureAtlas atlas, Game game) {
+    private static final float HEIGHT = 0.06f;
+
+    public ButtonNewGame(TextureAtlas atlas, GameScreen gameScreen) {
         super(atlas.findRegion("button_new_game"));
-        this.game = game;
+        this.gameScreen = gameScreen;
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(0.08f);
-        setBottom((worldBounds.getHalfHeight() / 2) - 0.4f);
+        setHeightProportion(HEIGHT);
     }
 
     @Override
     public void action() {
-        game.setScreen(new GameScreen(game));
+        gameScreen.startNewGame();
     }
 }
