@@ -181,10 +181,10 @@ public class GameScreen extends BaseScreen {
 
     private void update(float delta){
         if (pointx < mainShip.pos.x){
-            move = -0.5f;
+            move = 0.5f;
             pointx = mainShip.pos.x;
         } else if (pointx > mainShip.pos.x){
-            move = 0.5f;
+            move = -0.5f;
             pointx = mainShip.pos.x;
         } else
             move = 0;
