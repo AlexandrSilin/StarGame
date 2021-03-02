@@ -6,12 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ru.geekbrains.base.Sprite;
 import ru.geekbrains.math.Rect;
 
-public class GameOver extends Sprite {
-
+public class Title extends Sprite {
     private static final float HEIGHT = 0.18f;
-    private static final float TOP = 0.15f;
+    private static final float TOP = 0.4f;
 
-    public GameOver(Texture texture){
+    public Title(Texture texture){
         super(new TextureRegion(texture));
     }
 
